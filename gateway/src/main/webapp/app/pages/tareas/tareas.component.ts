@@ -5,7 +5,7 @@ import { useTareaStore } from '@/store';
 
 export default defineComponent({
   compatConfig: { MODE: 3 },
-  emits: ['confirmed'],
+  emits: ['confirmed','cancelT','updateT'],
   name: 'Tareas',
   setup() {
     const textLabel: Ref<string> = ref('Hola mundo');
@@ -37,6 +37,7 @@ export default defineComponent({
     },
     clickHandler(): void {
       console.log('Se ejecuto un click');
+
     },
     openEditModalHandler(tarea: any): void {
       this.tareaToEdit = JSON.parse(JSON.stringify(tarea));
@@ -74,36 +75,10 @@ export default defineComponent({
       this.deleteTareaModal.hide();
       this.editTareaModal.hide();
     },
+
     keygenerator(): string {
       return new Date().getTime().toString();
     },
-    isNombreValid(): boolean {
-      if (this.tareaToEdit?.nombre?.length) {
-        return this.tareaToEdit.nombre.length >= 3 && this.tareaToEdit.nombre.length <= 50;
-      }
-      return false;
-    },
-    isDescripcionValid(): boolean {
-      if (this.tareaToEdit?.descripcion?.length) {
-        return this.tareaToEdit.descripcion.length >= 3 && this.tareaToEdit.descripcion.length <= 100;
-      }
-      return false;
-    },
-    isDateValid(): boolean {
-      if (this.tareaToEdit?.fechaLimite) {
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const current = new Date(
-          this.tareaToEdit.fechaLimite.getFullYear(),
-          this.tareaToEdit.fechaLimite.getMonth(),
-          this.tareaToEdit.fechaLimite.getDate(),
-        );
-        return current >= today;
-      }
-      return false;
-    },
-    isFormValid(): boolean {
-      return this.isNombreValid() && this.isDescripcionValid() && this.isDateValid();
-    },
+   
   },
 });
